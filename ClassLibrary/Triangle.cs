@@ -3,43 +3,48 @@
 namespace ClassLibrary
 {
     /// <summary>
-    /// Класс тругольника.
+    /// Класс треугольника.
     /// </summary>
     public class Triangle
     {
         /// <summary>
         /// Сторона a.
         /// </summary>
-        private double a;
+        private double a = double.NaN;
 
         /// <summary>
         /// Сторона b.
         /// </summary>
-        private double b;
+        private double b = double.NaN;
 
         /// <summary>
         /// Сторона c.
         /// </summary>
-        private double c;
+        private double c = double.NaN;
 
         /// <summary>
         /// Сторона a.
         /// </summary>
         public double A
         {
-            get
-            {
-                return a;
-            }
+            get => a;
 
-            private set
+            set
             {
                 if (value <= 0)
                 {
                     throw new Exception("Треугольник не может иметь сторону a = " + value + ".");
                 }
 
-                a = value;
+                if (double.IsNaN(B) || double.IsNaN(C) || IsTriangleExisting(value, B, C))
+                {
+                    a = value;
+                }
+
+                else
+                {
+                    throw new Exception("Треугольник со сторонами a = " + value + ", b = " + B + ", c = " + C + " не существует.");
+                }
             }
         }
 
@@ -48,19 +53,24 @@ namespace ClassLibrary
         /// </summary>
         public double B
         {
-            get
-            {
-                return b;
-            }
+            get => b;
 
-            private set
+            set
             {
                 if (value <= 0)
                 {
                     throw new Exception("Треугольник не может иметь сторону b = " + value + ".");
                 }
 
-                b = value;
+                if (double.IsNaN(A) || double.IsNaN(C) || IsTriangleExisting(A, value, C))
+                {
+                    b = value;
+                }
+
+                else
+                {
+                    throw new Exception("Треугольник со сторонами a = " + A + ", b = " + value + ", c = " + C + " не существует.");
+                }
             }
         }
 
@@ -69,19 +79,24 @@ namespace ClassLibrary
         /// </summary>
         public double C
         {
-            get
-            {
-                return c;
-            }
+            get => c;
 
-            private set
+            set
             {
                 if (value <= 0)
                 {
                     throw new Exception("Треугольник не может иметь сторону c = " + value + ".");
                 }
 
-                c = value;
+                if (double.IsNaN(A) || double.IsNaN(B) || IsTriangleExisting(A, B, value))
+                {
+                    c = value;
+                }
+
+                else
+                {
+                    throw new Exception("Треугольник со сторонами a = " + A + ", b = " + B + ", c = " + value + " не существует.");
+                }
             }
         }
 
@@ -98,29 +113,21 @@ namespace ClassLibrary
         /// <summary>
         /// Конструктор с параметрами.
         /// </summary>
-        /// <param name="a">Сторона a.</param>
-        /// <param name="b">Сторона b.</param>
-        /// <param name="c">Сторона c.</param>
+        /// <param name="a">Сторона a</param>
+        /// <param name="b">Сторона b</param>
+        /// <param name="c">Сторона c</param>
         public Triangle(double a, double b, double c)
         {
             A = a;
             B = b;
             C = c;
-
-            if (!IsTriangleExisting())
-            {
-                throw new Exception("Треугольник со сторонами a = " + A + ", b = " + B + ", c = " + C + " не существует.");
-            }
         }
 
         /// <summary>
         /// Получение строкового представления треугольника.
         /// </summary>
         /// <returns>Строковое представление треугольника</returns>
-        public override string ToString()
-        {
-            return "a = " + A + "; b = " + B + "; c = " + C;
-        }
+        public override string ToString() => "a = " + A + "; b = " + B + "; c = " + C;
 
         /// <summary>
         /// Перегрузка оператора ">".
@@ -157,43 +164,30 @@ namespace ClassLibrary
         /// <summary>
         /// Проверка: существует ли треугольник.
         /// </summary>
-        /// <param name="a">Сторона a.</param>
-        /// <param name="b">Сторона b.</param>
-        /// <param name="c">Сторона c.</param>
+        /// <param name="a">Сторона a</param>
+        /// <param name="b">Сторона b</param>
+        /// <param name="c">Сторона c</param>
         /// <returns>true - треугольник существует; false - нет</returns>
-        public bool IsTriangleExisting() => (A < B + C) && (B < A + C) && (C < A + B);
+        public static bool IsTriangleExisting(double a, double b, double c) => (a < b + c) && (b < a + c) && (c < a + b);
 
         /// <summary>
         /// Вычисление периметра треугольника.
         /// </summary>
-        /// <param name="a">Сторона a.</param>
-        /// <param name="b">Сторона b.</param>
-        /// <param name="c">Сторона c.</param>
+        /// <param name="a">Сторона a</param>
+        /// <param name="b">Сторона b</param>
+        /// <param name="c">Сторона c</param>
         /// <returns>Периметр треугольника</returns>
-        public double GetPerimeter()
-        {
-            if (!IsTriangleExisting())
-            {
-                throw new Exception("Треугольник со сторонами a = " + A + ", b = " + B + ", c = " + C + " не существует.");
-            }
-
-            return A + B + C;
-        }
+        public double GetPerimeter() => A + B + C;
 
         /// <summary>
         /// Вычисление площади треугольника.
         /// </summary>
-        /// <param name="a">Сторона a.</param>
-        /// <param name="b">Сторона b.</param>
-        /// <param name="c">Сторона c.</param>
+        /// <param name="a">Сторона a</param>
+        /// <param name="b">Сторона b</param>
+        /// <param name="c">Сторона c</param>
         /// <returns>Площадь треугольника</returns>
         public double GetArea()
         {
-            if (!IsTriangleExisting())
-            {
-                throw new Exception("Треугольник со сторонами a = " + A + ", b = " + B + ", c = " + C + " не существует.");
-            }
-
             double p = GetPerimeter() / 2;
 
             return Math.Sqrt(p * (p - A) * (p - B) * (p - C));

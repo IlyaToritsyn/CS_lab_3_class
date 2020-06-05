@@ -28,7 +28,7 @@ namespace ConsoleApp
             return N;
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             while (true)
             {
@@ -50,8 +50,6 @@ namespace ConsoleApp
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message + "\n");
-
-                        continue;
                     }
                 }
                 while (triangle1 == null);
@@ -74,8 +72,6 @@ namespace ConsoleApp
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message + "\n");
-
-                        continue;
                     }
                 }
                 while (triangle2 == null);
